@@ -1,5 +1,6 @@
 package com.example.library.repository
 
+import android.util.Log
 import com.example.library.base.BaseRepository
 import com.example.library.base.Resource
 import com.example.library.data.NotificationApiService
@@ -18,6 +19,7 @@ class NotificationRepository @Inject constructor(
             emit(Resource.Loading())
             val response= apiService.postNotificationRequest(request)
             emit(parseResponse(response))
+            Log.i("response","${response.body()}")
         }.catch {
             emit(Resource.Error(throwable = Throwable(it)))
         }
