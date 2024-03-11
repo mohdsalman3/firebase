@@ -20,12 +20,21 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), ISdkInitCallback {
     private lateinit var binding:ActivityMainBinding
+    private val sharedPreferences:UserPreference by lazy { UserPreference(this) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.loginBtn.setOnClickListener {  askNotificationPermission()   }
+        initClick()
+    }
+    private fun initClick(){
+        if (sharedPreferences.isLoggedIn()){
+            launchLoginActivity()
+            finish()
+            return
+        }
     }
     private fun askNotificationPermission() {
         // This is only necessary for API level >= 33 (TIRAMISU)
@@ -34,6 +43,7 @@ class MainActivity : AppCompatActivity(), ISdkInitCallback {
                 PackageManager.PERMISSION_GRANTED
             ) {
                 initPushSdk()
+
             } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS)) {
                 // TODO: display an educational UI explaining to the user the features that will be enabled
                 //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
@@ -60,6 +70,7 @@ class MainActivity : AppCompatActivity(), ISdkInitCallback {
     ) { isGranted: Boolean ->
         if (isGranted) {
             initPushSdk()
+            sharedPreferences.setLoginState(true)
             launchLoginActivity()
 
             // FCM SDK (and your app) can post notifications.

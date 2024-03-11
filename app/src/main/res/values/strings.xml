@@ -2,4 +2,5 @@
     <string name="app_name">PushLibAndroid</string>
     <string name="phone_number">Enter a phone number</string>
     <string name="login">Login</string>
+    <string name="logout">Logout</string>
 </resources>
