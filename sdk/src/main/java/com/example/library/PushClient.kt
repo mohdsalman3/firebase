@@ -1,9 +1,15 @@
 package com.example.library
 
+import android.app.Application
 import android.content.Context
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.library.Cache.USER_TOKEN
 import com.example.library.callback.ISdkInitCallback
 import com.example.library.data.Config
+import com.example.library.data.modal.NotificationRequest
+import com.example.library.repository.NotificationRepository
+import com.example.library.viewmodel.NotificationViewModel
 
 class PushClient {
 
@@ -32,7 +38,20 @@ class PushClient {
         }
 
         private fun saveUserTokenOnServer(token: String?) {
+            val request = token?.let {
+                NotificationRequest(
+                    appId = "com.example.pushlibandroid",
+                    identifier = "7895024033",
+                    token= it,
+                    platform = "android"
+                )
+            }
             // Todo Api Call to server for save fcm token
+            val viewModel= ViewModelProvider.AndroidViewModelFactory.getInstance(Application()).create(NotificationViewModel::class.java)
+            if (request != null) {
+                viewModel.postNotification(request)
+            }
+
         }
 
 

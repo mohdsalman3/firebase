@@ -7,10 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.example.library.PushClient
 import com.example.library.callback.ISdkInitCallback
 import com.example.library.data.Config
+import com.example.library.viewmodel.NotificationViewModel
 import com.example.pushlibandroid.databinding.ActivityMainBinding
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
@@ -19,16 +22,21 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), ISdkInitCallback {
     private lateinit var binding:ActivityMainBinding
+    private  val viewmodel : NotificationViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.loginBtn.setOnClickListener {  askNotificationPermission()   }
-
+        initObserver()
 
     }
-
+  private  fun initObserver(){
+   viewmodel.successResponse.observe(this, Observer {
+       Log.i("request",it.toString())
+   })
+  }
     private fun askNotificationPermission() {
         // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
