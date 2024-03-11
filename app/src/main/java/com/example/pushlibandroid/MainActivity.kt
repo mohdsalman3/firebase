@@ -22,21 +22,13 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), ISdkInitCallback {
     private lateinit var binding:ActivityMainBinding
-    private  val viewmodel : NotificationViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.loginBtn.setOnClickListener {  askNotificationPermission()   }
-        initObserver()
-
     }
-  private  fun initObserver(){
-   viewmodel.successResponse.observe(this, Observer {
-       Log.i("request",it.toString())
-   })
-  }
     private fun askNotificationPermission() {
         // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

@@ -14,7 +14,6 @@ import javax.inject.Inject
 class NotificationViewModel @Inject constructor(
     private val repository: NotificationRepository
 ):BaseViewModel() {
-    val successResponse = MutableLiveData<ArrayList<NotificationResponseData?>>()
     fun postNotification(request: NotificationRequest){
         viewModelScope.launch(Dispatchers.IO) {
             repository.postNotification(request).collect {
