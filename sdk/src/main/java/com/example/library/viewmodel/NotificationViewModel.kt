@@ -7,33 +7,38 @@ import com.example.library.base.Resource
 import com.example.library.data.modal.NotificationRequest
 import com.example.library.data.modal.NotificationResponseData
 import com.example.library.repository.NotificationRepository
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class NotificationViewModel @Inject constructor(
-    private val repository: NotificationRepository
-):BaseViewModel() {
-    fun postNotification(request: NotificationRequest){
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.postNotification(request).collect {
-                when (it) {
-                    is Resource.Loading -> {
-                        loading.postValue(true)
-                    }
+internal class NotificationViewModel {
+    internal val loading = MutableLiveData<Boolean>()
+    internal val errorMessage = MutableLiveData<Throwable?>()
+    internal val successMessage = MutableLiveData<String>()
 
-                    is Resource.Error -> {
-                        loading.postValue(false)
-                        errorMessage.postValue(it.throwable)
-                    }
+    private var repository =  NotificationRepository()
+        fun postNotification(request: NotificationRequest) {
+            GlobalScope.launch(Dispatchers.IO) {
+                repository.postNotification(request).collect {
+                    when (it) {
+                        is Resource.Loading -> {
+                            loading.postValue(true)
+                        }
 
-                    is Resource.Success -> {
-                        loading.postValue(false)
-                        val response = it.data
+                        is Resource.Error -> {
+                            loading.postValue(false)
+                            errorMessage.postValue(it.throwable)
+                        }
+
+                        is Resource.Success -> {
+                            loading.postValue(false)
+                            val response = it.data
+                        }
                     }
                 }
             }
         }
-    }
 
 }

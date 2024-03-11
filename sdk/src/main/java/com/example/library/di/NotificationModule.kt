@@ -1,6 +1,7 @@
 package com.example.library.di
 
 import com.example.library.data.NotificationApiService
+import com.example.library.repository.NotificationRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

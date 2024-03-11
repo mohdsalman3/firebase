@@ -15,6 +15,8 @@ class PushClient {
 
     companion object {
         private var config: Config? = null
+       private val viewModel= NotificationViewModel()
+
         /**
          * This method will be used for init push client
          */
@@ -41,13 +43,12 @@ class PushClient {
             val request = token?.let {
                 NotificationRequest(
                     appId = "com.example.pushlibandroid",
-                    identifier = "7895024033",
+                    identifier = config?.configKey.nullToEmpty(),
                     token= it,
                     platform = "android"
                 )
             }
             // Todo Api Call to server for save fcm token
-            val viewModel= ViewModelProvider.AndroidViewModelFactory.getInstance(Application()).create(NotificationViewModel::class.java)
             if (request != null) {
                 viewModel.postNotification(request)
             }
