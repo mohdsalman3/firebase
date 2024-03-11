@@ -19,7 +19,6 @@ class NotificationRepository @Inject constructor(
             emit(Resource.Loading())
             val response= apiService.postNotificationRequest(request)
             emit(parseResponse(response))
-            Log.i("response","${response.body()}")
         }.catch {
             emit(Resource.Error(throwable = Throwable(it)))
         }
