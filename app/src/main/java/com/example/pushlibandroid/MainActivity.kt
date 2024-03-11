@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity(), ISdkInitCallback {
                 PackageManager.PERMISSION_GRANTED
             ) {
                 initPushSdk()
+                launchLoginActivity()
 
             } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS)) {
                 // TODO: display an educational UI explaining to the user the features that will be enabled
@@ -70,7 +71,6 @@ class MainActivity : AppCompatActivity(), ISdkInitCallback {
     ) { isGranted: Boolean ->
         if (isGranted) {
             initPushSdk()
-            sharedPreferences.setLoginState(true)
             launchLoginActivity()
 
             // FCM SDK (and your app) can post notifications.
@@ -80,6 +80,7 @@ class MainActivity : AppCompatActivity(), ISdkInitCallback {
     }
 
     private fun launchLoginActivity(){
+        sharedPreferences.setLoginState(true)
         val intent = Intent(this,LoginActivity::class.java)
         startActivity(intent)
     }
