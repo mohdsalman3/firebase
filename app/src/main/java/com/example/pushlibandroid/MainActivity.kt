@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), ISdkInitCallback {
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) ==
                 PackageManager.PERMISSION_GRANTED
             ) {
-                initFireBase()
+                initPushSdk()
             } else if (shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS)) {
                 // TODO: display an educational UI explaining to the user the features that will be enabled
                 //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
@@ -48,15 +48,20 @@ class MainActivity : AppCompatActivity(), ISdkInitCallback {
         }
     }
 
+    private fun initPushSdk(){
+        val phoneNumber =   binding.phoneNumber.text.toString()
+        PushClient.initPushClient(applicationContext,Config(phoneNumber, android.R.drawable.ic_lock_silent_mode,
+            android.R.color.holo_green_dark),this)
+        initFireBase()
+    }
+
 
     // Declare the launcher at the top of your Activity/Fragment:
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission(),
     ) { isGranted: Boolean ->
         if (isGranted) {
-            val phoneNumber =   binding.phoneNumber.text.toString()
-            PushClient.initPushClient(applicationContext,Config(phoneNumber, android.R.drawable.ic_lock_lock),this)
-            initFireBase()
+            initPushSdk()
             launchLoginActivity()
 
             // FCM SDK (and your app) can post notifications.

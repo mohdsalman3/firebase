@@ -3,6 +3,7 @@ package com.example.library.messaging
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.NotificationCompat
 import com.example.library.PushClient
@@ -33,6 +34,7 @@ class MyAppFirebaseMessagingService : PushFirebaseMessagingService() {
     }
 
     private fun sendNotification(messageBody: String?, title: String?) {
+        Log.d("Ankur","${PushClient.getConfigForSdk().toString()}")
         val channelId = CHANNEL_ID
         val notificationBuilder: NotificationCompat.Builder =
             NotificationCompat.Builder(this, channelId)
@@ -48,7 +50,7 @@ class MyAppFirebaseMessagingService : PushFirebaseMessagingService() {
         val channel = NotificationChannel(
             channelId,
             "Default Channel",
-            NotificationManager.IMPORTANCE_DEFAULT
+            NotificationManager.IMPORTANCE_HIGH
         )
         notificationManager.createNotificationChannel(channel)
         notificationManager.notify(0 , notificationBuilder.build())
