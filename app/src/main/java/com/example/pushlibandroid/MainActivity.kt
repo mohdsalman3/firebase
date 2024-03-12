@@ -54,6 +54,9 @@ class MainActivity : AppCompatActivity(), ISdkInitCallback {
                 // Directly ask for the permission
                 requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
             }
+        } else {
+            initPushSdk()
+            launchLoginActivity()
         }
     }
 

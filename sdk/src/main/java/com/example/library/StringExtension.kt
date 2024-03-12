@@ -6,4 +6,4 @@ package com.example.library
  */
 const val EMPTY = ""
 
-fun String?.nullToEmpty() = this ?: EMPTY
+internal fun String?.nullToEmpty() = this ?: EMPTY
