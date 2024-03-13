@@ -14,6 +14,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "PushLibAndroid"
+rootProject.name = "Push Demo"
 include(":app")
 include(":sdk")
