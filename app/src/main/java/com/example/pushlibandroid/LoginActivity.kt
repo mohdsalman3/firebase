@@ -15,6 +15,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.logoutBtn.setOnClickListener { loggedOut() }
+        binding.appVersion.text = "2.0"
     }
 
     private fun loggedOut(){
