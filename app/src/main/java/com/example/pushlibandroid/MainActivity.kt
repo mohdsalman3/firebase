@@ -1,11 +1,13 @@
 package com.example.pushlibandroid
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -52,6 +54,7 @@ class MainActivity : AppCompatActivity(), ISdkInitCallback {
                 //       If the user selects "No thanks," allow the user to continue without notifications.
             } else {
                 // Directly ask for the permission
+
                 requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
             }
         } else {
@@ -91,12 +94,14 @@ class MainActivity : AppCompatActivity(), ISdkInitCallback {
     private fun initFireBase() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
+                PushClient.showToast(this,"Failed to Fetch Token")
                 Log.w("TAG", "Fetching FCM registration token failed", task.exception)
                 return@OnCompleteListener
             }
-
             // Get new FCM registration token
+
             val token = task.result
+            PushClient.showToast(this,"Successfully Fetch Token")
             Log.d("TAG", "Firebase token $token")
 
             PushClient.saveFCMToken(token)

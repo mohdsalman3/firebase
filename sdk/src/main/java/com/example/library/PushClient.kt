@@ -1,17 +1,16 @@
 package com.example.library
 
-import android.app.Application
+
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.viewModelFactory
+import android.widget.Toast
 import com.example.library.Cache.USER_TOKEN
 import com.example.library.callback.ISdkInitCallback
 import com.example.library.data.Config
 import com.example.library.data.modal.NotificationRequest
-import com.example.library.repository.NotificationRepository
 import com.example.library.viewmodel.NotificationViewModel
 
 class PushClient {
+
 
     companion object {
         private var config: Config? = null
@@ -28,6 +27,10 @@ class PushClient {
             this.config = config
             Cache.initPref(applicationContext)
             // todo this method will be used for Init push client
+        }
+
+        fun showToast(applicationContext: Context,message:String?){
+            Toast.makeText(applicationContext,message,Toast.LENGTH_SHORT).show()
         }
 
 
@@ -52,6 +55,8 @@ class PushClient {
             if (request != null) {
                 viewModel.postNotification(request)
             }
+
+
 
         }
 
